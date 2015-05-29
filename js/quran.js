@@ -40,7 +40,7 @@ function load_page(page) {
     } else {
         page_str = ''+page;
     }
-    $page.css('background-image', 'url(http://dev.rayed.com/quran/img/'+page_str+'.jpg)');
+    $page.css('background-image', 'url(img/'+page_str+'.jpg)');
 
     // aya segments
     p = $.ajax({
@@ -83,11 +83,14 @@ function aya_clicked(event) {
     el = $(event.target).closest('a');
     sura = el.data('sura');
     aya = el.data('aya');
+    $('a.aya_link').removeClass('active');
+    el.addClass('active');
     // console.log('Aya Clicked!' + sura + ' ' + aya);
     load_aya(sura, aya);
 }
 
 function load_aya(sura, aya) {
+    var tafseer_name = Array('مشكل','نصي','الجلالين','الميسر', 'ابن كثير');
     $taf = $('#tafseer');
     $taf.html('');
 
@@ -104,7 +107,7 @@ function load_aya(sura, aya) {
         str = '';
         for (var i=0; i < data.length ; i++) {
             taf = data[i];
-            str += '<hr>'+taf.text;
+            str += '<strong>'+tafseer_name[taf.type]+'</strong><br>'+taf.text+'<hr>';
         } 
         $taf.html(str);
     });

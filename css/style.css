@@ -26,6 +26,11 @@ body {
     background:yellow;
     opacity:.2; filter:alpha(opacity=25);
 }
+#page a.active div {
+    background:blue;
+    opacity:.2; filter:alpha(opacity=25);
+}
+
 #page div {
     position:absolute;
 }
