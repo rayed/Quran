@@ -1,0 +1,41 @@
+
+body {
+    direction: rtl;
+}
+
+#wrapper {
+    position: relative;
+}
+#suras {
+    float:right;
+    width:200px;
+    height:500px;
+    overflow:auto;
+}
+
+#page {
+    position: relative;
+    right:220px;
+    top:30px;
+    height:430px;
+    width:290px;
+    margin:0;
+    padding:0;
+}
+#page a:hover div {
+    background:yellow;
+    opacity:.2; filter:alpha(opacity=25);
+}
+#page div {
+    position:absolute;
+}
+
+#tafseer {
+    position: absolute;
+    right:520px;
+    top:30px;
+    height:430px;
+    width:290px;
+    border:1px solid red;
+    overflow:auto;
+}
