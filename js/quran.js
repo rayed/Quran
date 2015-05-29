@@ -1,4 +1,6 @@
 
+var current_page = 1;
+
 function load_suras() {
     p = $.ajax({
       url: "json/suras.json",
@@ -9,13 +11,13 @@ function load_suras() {
         str = '';
         for (var i=0; i < data.length ; i++) {
             sura = data[i];
-            str += '<tr>';
+            str += '<tr id="sura_link_'+ sura.id +'">';
             str += '<td>' + (i+1) + '</td>';
             str += '<td> <a class="sura_link" href="" ';
             str += 'data-page="' + sura.page +'" >';
-            str += sura['name'] + '</a></td>';
-            str += '<td>' + sura['page'] + '</td>';
-            str += '<td>' + sura['ayas'] + '</td>';
+            str += sura.name + '</a></td>';
+            str += '<td>' + sura.page + '</td>';
+            str += '<td>' + sura.ayas + '</td>';
             str += '</tr>';
         } 
         $('#suras tbody').html(str);
@@ -33,11 +35,13 @@ function sura_clicked(event) {
 }
 
 function load_page(page) {
+    current_page = page;
+    $("#page_num").html('Page:'+current_page);
+
     $page = $('#page');
     $page.html('');
     $taf = $('#tafseer');
     $taf.html('');
-    $("#page_num").html('Page:'+page);
 
     if (page<10) {
         page_str = '00'+page;
@@ -59,9 +63,14 @@ function load_page(page) {
     });
 
     p.done(function(data) {
+        // Clear selected
+        $('#suras tr').removeClass('active');
         for (var i=0; i < data.length ; i++) {
             aya = data[i];
             // console.log('Sura:' + aya.sura_id+' Aya:'+aya.aya_id);
+            // Activate Sura 
+            $('#sura_link_'+aya.sura_id).addClass('active');
+
             $a = $('<a>')
             $a.attr('href', '#'+aya.aya_id);
             $a.data('sura', aya.sura_id);
@@ -133,4 +142,11 @@ $(function () {
     load_page(1);
     $(document).on('click', 'a.sura_link', sura_clicked);
     $(document).on('click', 'a.aya_link', aya_clicked);
+
+    // Hotkeys 
+    //$(document).bind('keydown', 'right', function() { p = parseInt(current_page) -1; document.location='#?page='+ p; }  );
+    //$(document).bind('keydown', 'left', function() { p = parseInt(current_page) +1; document.location='#?page='+ p; }  );
+    $(document).bind('keydown', 'right', function() { p = parseInt(current_page) -1; load_page(p); }  );
+    $(document).bind('keydown', 'left', function() { p = parseInt(current_page) +1; load_page(p); }  );
+
 });

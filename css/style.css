@@ -12,6 +12,14 @@ body {
     height:500px;
     overflow:auto;
 }
+#suras .active { 
+    background:navy;
+    color:white;    
+}
+#suras .active a { 
+    color:white;
+}
+
 
 #page {
     position: relative;
