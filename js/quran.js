@@ -63,8 +63,11 @@ function load_page(page) {
             $a.addClass('aya_link');
             for (var j=0; j < aya.segs.length ; j++) {
                 seg = aya.segs[j];
-                if (seg.w < 30) continue;
-                if (seg.x < 30) seg.x = 0;
+                if (seg.w !=0 && seg.w < 30) continue;
+                if (seg.x < 30) {
+                    seg.w += seg.x;
+                    seg.x = 0;
+                }
                 $d = $('<div>')
                 .css('top', seg.y+'px')
                 .css('left', seg.x+'px')
