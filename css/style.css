@@ -4,27 +4,39 @@ body {
 }
 
 #wrapper {
+    width: 960px;
+    margin:auto;
+}
+
+#control {
+    text-align: center;
+    background: silver;
+}
+
+#wrapper2 {
     position: relative;
 }
+
 #suras {
-    float:right;
+    position: absolute;
+    top:15px;
     width:200px;
-    height:500px;
+    height:430px;
     overflow:auto;
 }
-#suras .active { 
+#suras .active {
     background:navy;
-    color:white;    
+    color:white;
 }
-#suras .active a { 
+#suras .active a {
     color:white;
 }
 
 
 #page {
-    position: relative;
+    position: absolute;
+    top:15px;
     right:220px;
-    top:30px;
     height:430px;
     width:290px;
     margin:0;
@@ -45,10 +57,10 @@ body {
 
 #tafseer {
     position: absolute;
+    top:15px;
     right:520px;
-    top:30px;
     height:430px;
     width:290px;
-    border:1px solid red;
+    background: #f8f8f8;
     overflow:auto;
 }

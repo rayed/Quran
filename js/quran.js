@@ -35,8 +35,10 @@ function sura_clicked(event) {
 }
 
 function load_page(page) {
+    if (page < 1) page = 1;
+    if (page > 604) page = 604;
     current_page = page;
-    $("#page_num").html('Page:'+current_page);
+    $("#page_num").html('صفحة:'+current_page);
 
     $page = $('#page');
     $page.html('');
@@ -133,6 +135,16 @@ function load_aya(sura, aya) {
     });
 }
 
+function page_change(event) {
+    event.preventDefault();
+    event.stopPropagation();
+    el = $(event.target);
+    offset = el.data('offset');
+    console.log('Offset:'+ offset);
+    page =  parseInt(current_page) + offset;
+    load_page(page);
+}
+
 
 
 $(function () {
@@ -143,10 +155,14 @@ $(function () {
     $(document).on('click', 'a.sura_link', sura_clicked);
     $(document).on('click', 'a.aya_link', aya_clicked);
 
+    $('.page-change').click(page_change);
+
     // Hotkeys 
     //$(document).bind('keydown', 'right', function() { p = parseInt(current_page) -1; document.location='#?page='+ p; }  );
     //$(document).bind('keydown', 'left', function() { p = parseInt(current_page) +1; document.location='#?page='+ p; }  );
     $(document).bind('keydown', 'right', function() { p = parseInt(current_page) -1; load_page(p); }  );
     $(document).bind('keydown', 'left', function() { p = parseInt(current_page) +1; load_page(p); }  );
+
+
 
 });
