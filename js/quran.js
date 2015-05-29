@@ -9,11 +9,16 @@ function load_suras() {
         str = '';
         for (var i=0; i < data.length ; i++) {
             sura = data[i];
-            str += (i+1) + ' <a class="sura_link" href="" ';
+            str += '<tr>';
+            str += '<td>' + (i+1) + '</td>';
+            str += '<td> <a class="sura_link" href="" ';
             str += 'data-page="' + sura.page +'" >';
-            str += sura['name'] + '</a><br>';
+            str += sura['name'] + '</a></td>';
+            str += '<td>' + sura['page'] + '</td>';
+            str += '<td>' + sura['ayas'] + '</td>';
+            str += '</tr>';
         } 
-        $('#suras').html(str);
+        $('#suras tbody').html(str);
     });
 }
 
@@ -32,6 +37,7 @@ function load_page(page) {
     $page.html('');
     $taf = $('#tafseer');
     $taf.html('');
+    $("#page_num").html('Page:'+page);
 
     if (page<10) {
         page_str = '00'+page;
@@ -63,8 +69,8 @@ function load_page(page) {
             $a.addClass('aya_link');
             for (var j=0; j < aya.segs.length ; j++) {
                 seg = aya.segs[j];
-                if (seg.w !=0 && seg.w < 30) continue;
-                if (seg.x < 30) {
+                if (seg.w !=0 && seg.w < 15) continue;
+                if (seg.x < 15) {
                     seg.w += seg.x;
                     seg.x = 0;
                 }
