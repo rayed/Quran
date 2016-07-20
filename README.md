@@ -11,9 +11,6 @@ run it run basic Python web server from the project root:
 It will run on port 8000, you can access using the following URL:
 <http://localhost:8000/>
 
-# Screen Shot
-
-![Screen Shot](screenshot.png?raw=true "Screen Shot")
 
 # Demo
 
