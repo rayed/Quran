@@ -1,66 +1,60 @@
-
 body {
-    direction: rtl;
+  direction: rtl;
 }
 
 #wrapper {
-    width: 960px;
-    margin:auto;
+  width: 960px;
+  margin: auto;
 }
 
 #control {
-    text-align: center;
-    background: silver;
+  text-align: center;
+  background: silver;
 }
 
-#wrapper2 {
-    position: relative;
+#main {
+  display: flex;
+  margin-top: 15px;
 }
 
 #suras {
-    position: absolute;
-    top:15px;
-    width:200px;
-    height:430px;
-    overflow:auto;
+  top: 15px;
+  width: 200px;
+  height: 430px;
+  overflow: auto;
 }
 #suras .active {
-    background:navy;
-    color:white;
+  background: navy;
+  color: white;
 }
 #suras .active a {
-    color:white;
+  color: white;
 }
-
 
 #page {
-    position: absolute;
-    top:15px;
-    right:220px;
-    height:430px;
-    width:290px;
-    margin:0;
-    padding:0;
+  position: relative;
+  height: 430px;
+  width: 290px;
+  margin-right: 20px;
 }
 #page a:hover div {
-    background:yellow;
-    opacity:.2; filter:alpha(opacity=25);
+  background: yellow;
+  opacity: 0.2;
+  filter: alpha(opacity=25);
 }
 #page a.active div {
-    background:blue;
-    opacity:.2; filter:alpha(opacity=25);
+  background: blue;
+  opacity: 0.2;
+  filter: alpha(opacity=25);
 }
-
 #page div {
-    position:absolute;
+  position: absolute;
 }
 
 #tafseer {
-    position: absolute;
-    top:15px;
-    right:520px;
-    height:430px;
-    width:290px;
-    background: #f8f8f8;
-    overflow:auto;
+  height: 430px;
+  width: 290px;
+  background: #f8f8f8;
+  overflow: auto;
+  margin-right: 10px;
 }
