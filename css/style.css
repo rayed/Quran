@@ -45,6 +45,11 @@ html {
   font-size: 1.6rem;
 }
 
+.suras__table th,
+.suras__table td {
+  text-align: center;
+}
+
 #page {
   position: relative;
   height: 43rem;
