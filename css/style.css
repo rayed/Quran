@@ -13,6 +13,15 @@ html {
   font-size: 1.6rem;
 }
 
+.control__button {
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  color: navy;
+  text-decoration: underline;
+  font-size: 1.6rem;
+}
+
 #main {
   display: flex;
   margin-top: 1.5rem;
