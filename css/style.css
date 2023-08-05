@@ -1,22 +1,27 @@
+html {
+  font-size: 10px;
+}
+
 #wrapper {
-  width: 960px;
+  width: 96rem;
   margin: auto;
 }
 
 #control {
   text-align: center;
   background: silver;
+  font-size: 1.6rem;
 }
 
 #main {
   display: flex;
-  margin-top: 15px;
+  margin-top: 1.5rem;
 }
 
 #suras {
-  top: 15px;
-  width: 200px;
-  height: 430px;
+  top: 1.5rem;
+  width: 20rem;
+  height: 43rem;
   overflow: auto;
 }
 #suras .active {
@@ -27,11 +32,15 @@
   color: white;
 }
 
+.suras__table {
+  font-size: 1.6rem;
+}
+
 #page {
   position: relative;
-  height: 430px;
-  width: 290px;
-  margin-right: 20px;
+  height: 43rem;
+  width: 29rem;
+  margin-right: 2rem;
 }
 #page a:hover div {
   background: yellow;
@@ -48,9 +57,10 @@
 }
 
 #tafseer {
-  height: 430px;
-  width: 290px;
+  height: 43rem;
+  width: 29rem;
   background: #f8f8f8;
   overflow: auto;
-  margin-right: 10px;
+  margin-right: 1rem;
+  font-size: 1.6rem;
 }
