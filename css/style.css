@@ -11,7 +11,7 @@ html {
   display: flex;
   justify-content: center;
   align-items: center;
-  background: silver;
+  background-color: silver;
   font-size: 1.6rem;
 }
 
@@ -42,7 +42,7 @@ html {
   overflow: auto;
 }
 #suras .active {
-  background: navy;
+  background-color: navy;
   color: white;
 }
 #suras .active a {
@@ -65,12 +65,12 @@ html {
   margin-right: 2rem;
 }
 #page a:hover div {
-  background: yellow;
+  background-color: yellow;
   opacity: 0.2;
   filter: alpha(opacity=25);
 }
 #page a.active div {
-  background: blue;
+  background-color: blue;
   opacity: 0.2;
   filter: alpha(opacity=25);
 }
@@ -81,7 +81,7 @@ html {
 #tafseer {
   height: 43rem;
   width: 29rem;
-  background: #f8f8f8;
+  background-color: #f8f8f8;
   overflow: auto;
   margin-right: 1rem;
   font-size: 1.6rem;
