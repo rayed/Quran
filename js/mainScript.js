@@ -1,6 +1,36 @@
-var current_page = 1
+var currentPage = 1
 
-function load_suras() {
+/* user interfaces */
+function getAyaTafseer(sura, aya) {
+  var tafseer_name = Array('مشكل', 'نصي', 'الجلالين', 'الميسر', 'ابن كثير')
+  $taf = $('#tafseer')
+  $taf.html('')
+
+  p = $.ajax({
+    url: 'json/aya_' + sura + '_' + aya + '.json',
+    dataType: 'json'
+  })
+
+  p.fail(function (data) {
+    console.log('Failed to load Tafseer!')
+  })
+
+  p.done(function (data) {
+    str = ''
+    for (var i = 0; i < data.length; i++) {
+      taf = data[i]
+      str +=
+        '<strong>' +
+        tafseer_name[taf.type] +
+        '</strong><br>' +
+        taf.text +
+        '<hr>'
+    }
+    $taf.html(str)
+  })
+}
+
+function handleFahres() {
   p = $.ajax({
     url: 'json/suras.json',
     dataType: 'json'
@@ -23,20 +53,11 @@ function load_suras() {
   })
 }
 
-function sura_clicked(event) {
-  event.preventDefault()
-  event.stopPropagation()
-  el = event.target
-  page = $(el).data('page')
-  // console.log('Sura Clicked!' + page);
-  load_page(page)
-}
-
-function load_page(page) {
+function loadPage(page) {
   if (page < 1) page = 1
   if (page > 604) page = 604
-  current_page = page
-  $('.control__page-num').html('صفحة : ' + current_page)
+  currentPage = page
+  $('.control__page-num').html('صفحة : ' + currentPage)
 
   $page = $('#page')
   $page.html('')
@@ -95,8 +116,19 @@ function load_page(page) {
     }
   })
 }
+/* user interface */
 
-function aya_clicked(event) {
+/*interactions */
+function handleSuraClick(event) {
+  event.preventDefault()
+  event.stopPropagation()
+  el = event.target
+  page = $(el).data('page')
+  // console.log('Sura Clicked!' + page);
+  loadPage(page)
+}
+
+function handleAyaClick(event) {
   event.preventDefault()
   event.stopPropagation()
   el = $(event.target).closest('a')
@@ -105,66 +137,40 @@ function aya_clicked(event) {
   $('a.aya_link').removeClass('active')
   el.addClass('active')
   // console.log('Aya Clicked!' + sura + ' ' + aya);
-  load_aya(sura, aya)
+  getAyaTafseer(sura, aya)
 }
 
-function load_aya(sura, aya) {
-  var tafseer_name = Array('مشكل', 'نصي', 'الجلالين', 'الميسر', 'ابن كثير')
-  $taf = $('#tafseer')
-  $taf.html('')
-
-  p = $.ajax({
-    url: 'json/aya_' + sura + '_' + aya + '.json',
-    dataType: 'json'
-  })
-
-  p.fail(function (data) {
-    console.log('Failed to load Tafseer!')
-  })
-
-  p.done(function (data) {
-    str = ''
-    for (var i = 0; i < data.length; i++) {
-      taf = data[i]
-      str +=
-        '<strong>' +
-        tafseer_name[taf.type] +
-        '</strong><br>' +
-        taf.text +
-        '<hr>'
-    }
-    $taf.html(str)
-  })
-}
-
-function page_change(event) {
+function changePage(event) {
   event.preventDefault()
   event.stopPropagation()
   el = $(event.target)
   offset = el.data('offset')
   console.log('Offset:' + offset)
-  page = parseInt(current_page) + offset
-  load_page(page)
+  page = parseInt(currentPage) + offset
+  loadPage(page)
 }
+/*interactions */
 
+/* main */
 $(function () {
   console.log('JQuery Started!')
-  load_suras()
-  load_page(1)
-  $(document).on('click', 'a.sura_link', sura_clicked)
-  $(document).on('click', 'a.aya_link', aya_clicked)
+  handleFahres()
+  loadPage(1)
+  $(document).on('click', 'a.sura_link', handleSuraClick)
+  $(document).on('click', 'a.aya_link', handleAyaClick)
 
-  $('.control__button').click(page_change)
+  $('.control__button').click(changePage)
 
   // Hotkeys
-  //$(document).bind('keydown', 'right', function() { p = parseInt(current_page) -1; document.location='#?page='+ p; }  );
-  //$(document).bind('keydown', 'left', function() { p = parseInt(current_page) +1; document.location='#?page='+ p; }  );
+  //$(document).bind('keydown', 'right', function() { p = parseInt(currentPage) -1; document.location='#?page='+ p; }  );
+  //$(document).bind('keydown', 'left', function() { p = parseInt(currentPage) +1; document.location='#?page='+ p; }  );
   $(document).bind('keydown', 'right', function () {
-    p = parseInt(current_page) - 1
-    load_page(p)
+    p = parseInt(currentPage) - 1
+    loadPage(p)
   })
   $(document).bind('keydown', 'left', function () {
-    p = parseInt(current_page) + 1
-    load_page(p)
+    p = parseInt(currentPage) + 1
+    loadPage(p)
   })
 })
+/* main */
