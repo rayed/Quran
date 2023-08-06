@@ -1,5 +1,12 @@
 var currentPage = 1
 
+/* common */
+function stopEventPropagation(event) {
+  event.preventDefault()
+  event.stopPropagation()
+}
+/* common */
+
 /* user interfaces */
 function getAyaTafseer(sura, aya) {
   var tafseer_name = Array('مشكل', 'نصي', 'الجلالين', 'الميسر', 'ابن كثير')
@@ -120,17 +127,13 @@ function loadPage(page) {
 
 /*interactions */
 function handleSuraClick(event) {
-  event.preventDefault()
-  event.stopPropagation()
-  el = event.target
-  page = $(el).data('page')
-  // console.log('Sura Clicked!' + page);
-  loadPage(page)
+  stopEventPropagation(event)
+  pageNumber = $(event.target).data('page')
+  loadPage(pageNumber)
 }
 
 function handleAyaClick(event) {
-  event.preventDefault()
-  event.stopPropagation()
+  stopEventPropagation(event)
   el = $(event.target).closest('a')
   sura = el.data('sura')
   aya = el.data('aya')
@@ -141,8 +144,7 @@ function handleAyaClick(event) {
 }
 
 function changePage(event) {
-  event.preventDefault()
-  event.stopPropagation()
+  stopEventPropagation(event)
   el = $(event.target)
   offset = el.data('offset')
   console.log('Offset:' + offset)
