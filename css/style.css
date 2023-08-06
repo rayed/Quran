@@ -8,9 +8,16 @@ html {
 }
 
 #control {
-  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   background: silver;
   font-size: 1.6rem;
+}
+
+.control__page-num {
+  display: inline-block;
+  padding-top: 0.3rem;
 }
 
 .control__button {
@@ -20,6 +27,7 @@ html {
   color: navy;
   text-decoration: underline;
   font-size: 1.6rem;
+  padding-bottom: 0.5rem;
 }
 
 #main {

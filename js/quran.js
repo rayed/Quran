@@ -36,7 +36,7 @@ function load_page(page) {
   if (page < 1) page = 1
   if (page > 604) page = 604
   current_page = page
-  $('#page_num').html('صفحة:' + current_page)
+  $('.control__page-num').html('صفحة : ' + current_page)
 
   $page = $('#page')
   $page.html('')
