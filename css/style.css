@@ -1,49 +1,76 @@
-body {
-  direction: rtl;
+html {
+  font-size: 10px;
 }
 
 #wrapper {
-  width: 960px;
+  width: 96rem;
   margin: auto;
 }
 
 #control {
-  text-align: center;
-  background: silver;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: silver;
+  font-size: 1.6rem;
+}
+
+.control__page-num {
+  display: inline-block;
+  padding-top: 0.3rem;
+}
+
+.control__button {
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  color: navy;
+  text-decoration: underline;
+  font-size: 1.6rem;
+  padding-bottom: 0.5rem;
 }
 
 #main {
   display: flex;
-  margin-top: 15px;
+  margin-top: 1.5rem;
 }
 
 #suras {
-  top: 15px;
-  width: 200px;
-  height: 430px;
+  top: 1.5rem;
+  width: 20rem;
+  height: 43rem;
   overflow: auto;
 }
 #suras .active {
-  background: navy;
+  background-color: navy;
   color: white;
 }
 #suras .active a {
   color: white;
 }
 
+.suras__table {
+  font-size: 1.6rem;
+}
+
+.suras__table th,
+.suras__table td {
+  text-align: center;
+}
+
 #page {
   position: relative;
-  height: 430px;
-  width: 290px;
-  margin-right: 20px;
+  height: 43rem;
+  width: 29rem;
+  margin-right: 2rem;
 }
 #page a:hover div {
-  background: yellow;
+  background-color: yellow;
   opacity: 0.2;
   filter: alpha(opacity=25);
 }
 #page a.active div {
-  background: blue;
+  background-color: blue;
   opacity: 0.2;
   filter: alpha(opacity=25);
 }
@@ -52,9 +79,10 @@ body {
 }
 
 #tafseer {
-  height: 430px;
-  width: 290px;
-  background: #f8f8f8;
+  height: 43rem;
+  width: 29rem;
+  background-color: #f8f8f8;
   overflow: auto;
-  margin-right: 10px;
+  margin-right: 1rem;
+  font-size: 1.6rem;
 }
