@@ -1,9 +1,30 @@
+const arEnNumberObject = {
+  0: '٠',
+  1: '١',
+  2: '٢',
+  3: '٣',
+  4: '٤',
+  5: '٥',
+  6: '٦',
+  7: '٧',
+  8: '٨',
+  9: '٩'
+}
 var currentPage = 1
 
 /* common */
 function stopEventPropagation(event) {
   event.preventDefault()
   event.stopPropagation()
+}
+
+function convertNumberFromEnToAr(enNum) {
+  let str = ''
+  const enNumbers = enNum.toString().split('')
+
+  enNumbers.forEach(num => (str += arEnNumberObject[num]))
+
+  return str
 }
 /* common */
 
@@ -46,7 +67,10 @@ function handleFahres() {
   p.done(function (data) {
     data.forEach(function (item) {
       const row = $('<tr>').addClass('fahres-sura')
-      $('<td>').addClass('fahres-sura__id').html(item.id).appendTo(row)
+      $('<td>')
+        .addClass('fahres-sura__id')
+        .html(convertNumberFromEnToAr(item.id))
+        .appendTo(row)
       $('<td>').addClass('fahres-sura__name').appendTo(row)
       $(`<button data-page=${item.page}>`)
         .addClass('fahres-sura__name-button')
@@ -54,11 +78,11 @@ function handleFahres() {
         .appendTo($('.fahres-sura__name', row))
       $('<td>')
         .addClass('fahres-sura__page-number')
-        .html(item.page)
+        .html(convertNumberFromEnToAr(item.page))
         .appendTo(row)
       $('<td>')
         .addClass('fahres-sura__ayas-number')
-        .html(item.ayas)
+        .html(convertNumberFromEnToAr(item.ayas))
         .appendTo(row)
       $('.suras__table tbody').append(row)
     })
@@ -69,7 +93,7 @@ function loadPage(page) {
   if (page < 1) page = 1
   if (page > 604) page = 604
   currentPage = page
-  $('.control__page-num').html('صفحة : ' + currentPage)
+  $('.control__page-num').html('صفحة : ' + convertNumberFromEnToAr(currentPage))
 
   $page = $('#page')
   $page.html('')
