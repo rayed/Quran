@@ -1,6 +1,16 @@
+/*Start Global*/
 html {
   font-size: 10px;
 }
+/*End Global*/
+
+/*Start Reset*/
+button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+/*End Reset*/
 
 #wrapper {
   width: 96rem;
@@ -21,9 +31,6 @@ html {
 }
 
 .control__button {
-  border: none;
-  background-color: transparent;
-  cursor: pointer;
   color: navy;
   text-decoration: underline;
   font-size: 1.6rem;
@@ -59,9 +66,6 @@ html {
 }
 
 .fahres-sura__name-button {
-  background-color: transparent;
-  border: none;
-  cursor: pointer;
   color: navy;
   text-decoration: underline;
   font-size: 1.6rem;
