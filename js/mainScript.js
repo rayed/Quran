@@ -44,19 +44,24 @@ function handleFahres() {
   })
 
   p.done(function (data) {
-    str = ''
-    for (var i = 0; i < data.length; i++) {
-      sura = data[i]
-      str += '<tr id="sura_link_' + sura.id + '">'
-      str += '<td>' + (i + 1) + '</td>'
-      str += '<td> <a class="sura_link" href="" '
-      str += 'data-page="' + sura.page + '" >'
-      str += sura.name + '</a></td>'
-      str += '<td>' + sura.page + '</td>'
-      str += '<td>' + sura.ayas + '</td>'
-      str += '</tr>'
-    }
-    $('#suras tbody').html(str)
+    data.forEach(function (item) {
+      const row = $('<tr>').addClass('fahres-sura')
+      $('<td>').addClass('fahres-sura__id').html(item.id).appendTo(row)
+      $('<td>').addClass('fahres-sura__name').appendTo(row)
+      $(`<button data-page=${item.page}>`)
+        .addClass('fahres-sura__name-button')
+        .html(item.name)
+        .appendTo($('.fahres-sura__name', row))
+      $('<td>')
+        .addClass('fahres-sura__page-number')
+        .html(item.page)
+        .appendTo(row)
+      $('<td>')
+        .addClass('fahres-sura__ayas-number')
+        .html(item.ayas)
+        .appendTo(row)
+      $('.suras__table tbody').append(row)
+    })
   })
 }
 
@@ -72,13 +77,13 @@ function loadPage(page) {
   $taf.html('')
 
   if (page < 10) {
-    page_str = '00' + page
+    pageStr = '00' + page
   } else if (page < 100) {
-    page_str = '0' + page
+    pageStr = '0' + page
   } else {
-    page_str = '' + page
+    pageStr = '' + page
   }
-  $page.css('background-image', 'url(img/' + page_str + '.jpg)')
+  $page.css('background-image', 'url(img/' + pageStr + '.jpg)')
 
   // aya segments
   p = $.ajax({
@@ -97,7 +102,7 @@ function loadPage(page) {
       aya = data[i]
       // console.log('Sura:' + aya.sura_id+' Aya:'+aya.aya_id);
       // Activate Sura
-      $('#sura_link_' + aya.sura_id).addClass('active')
+      $('.fahres-sura__name-button' + aya.sura_id).addClass('active')
 
       $a = $('<a>')
       $a.attr('href', '#' + aya.aya_id)
@@ -158,7 +163,7 @@ $(function () {
   console.log('JQuery Started!')
   handleFahres()
   loadPage(1)
-  $(document).on('click', 'a.sura_link', handleSuraClick)
+  $(document).on('click', 'button.fahres-sura__name-button', handleSuraClick)
   $(document).on('click', 'a.aya_link', handleAyaClick)
 
   $('.control__button').click(changePage)
