@@ -58,6 +58,15 @@ html {
   text-align: center;
 }
 
+.fahres-sura__name-button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  color: navy;
+  text-decoration: underline;
+  font-size: 1.6rem;
+}
+
 #page {
   position: relative;
   height: 43rem;
