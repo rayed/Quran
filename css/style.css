@@ -1,9 +1,19 @@
+/*Start Global*/
 html {
   font-size: 10px;
 }
+/*End Global*/
+
+/*Start Reset*/
+button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+/*End Reset*/
 
 #wrapper {
-  width: 96rem;
+  width: 81rem;
   margin: auto;
 }
 
@@ -21,9 +31,6 @@ html {
 }
 
 .control__button {
-  border: none;
-  background-color: transparent;
-  cursor: pointer;
   color: navy;
   text-decoration: underline;
   font-size: 1.6rem;
@@ -56,6 +63,12 @@ html {
 .suras__table th,
 .suras__table td {
   text-align: center;
+}
+
+.fahres-sura__name-button {
+  color: navy;
+  text-decoration: underline;
+  font-size: 1.6rem;
 }
 
 #page {
