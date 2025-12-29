@@ -1,170 +1,168 @@
-var current_page = 1
+// State Management
+let currentPage = 1;
+const tafseerNames = ['مشكل', 'نصي', 'الجلالين', 'الميسر', 'ابن كثير'];
 
-function load_suras() {
-  p = $.ajax({
-    url: 'json/suras.json',
-    dataType: 'json'
-  })
+/**
+ * Fetch and render the list of Suras
+ */
+async function loadSuras() {
+    try {
+        const response = await fetch('json/suras.json');
+        const data = await response.json();
+        
+        const html = data.map((sura, i) => `
+            <tr id="sura_link_${sura.id}">
+                <td>${i + 1}</td>
+                <td>
+                    <a class="sura_link" href="#" data-page="${sura.page}">${sura.name}</a>
+                </td>
+                <td>${sura.page}</td>
+                <td>${sura.ayas}</td>
+            </tr>
+        `).join('');
 
-  p.done(function (data) {
-    str = ''
-    for (var i = 0; i < data.length; i++) {
-      sura = data[i]
-      str += '<tr id="sura_link_' + sura.id + '">'
-      str += '<td>' + (i + 1) + '</td>'
-      str += '<td> <a class="sura_link" href="" '
-      str += 'data-page="' + sura.page + '" >'
-      str += sura.name + '</a></td>'
-      str += '<td>' + sura.page + '</td>'
-      str += '<td>' + sura.ayas + '</td>'
-      str += '</tr>'
+        document.querySelector('#suras tbody').innerHTML = html;
+    } catch (err) {
+        console.error('Failed to load suras:', err);
     }
-    $('#suras tbody').html(str)
-  })
 }
 
-function sura_clicked(event) {
-  event.preventDefault()
-  event.stopPropagation()
-  el = event.target
-  page = $(el).data('page')
-  // console.log('Sura Clicked!' + page);
-  load_page(page)
-}
+/**
+ * Load a specific page and its interactive segments
+ */
+async function loadPage(page) {
+    // Bounds check
+    if (page < 1) page = 1;
+    if (page > 604) page = 604;
+    currentPage = page;
 
-function load_page(page) {
-  if (page < 1) page = 1
-  if (page > 604) page = 604
-  current_page = page
-  $('.control__page-num').html('صفحة : ' + current_page)
+    // Update UI
+    document.querySelector('.control__page-num').textContent = `صفحة : ${currentPage}`;
+    
+    const pageEl = document.getElementById('page');
+    const tafEl = document.getElementById('tafseer');
+    pageEl.innerHTML = '';
+    tafEl.innerHTML = '';
 
-  $page = $('#page')
-  $page.html('')
-  $taf = $('#tafseer')
-  $taf.html('')
+    // Padding page number (e.g., 1 -> 001)
+    const pageStr = String(page).padStart(3, '0');
+    pageEl.style.backgroundImage = `url(img/${pageStr}.jpg)`;
 
-  if (page < 10) {
-    page_str = '00' + page
-  } else if (page < 100) {
-    page_str = '0' + page
-  } else {
-    page_str = '' + page
-  }
-  $page.css('background-image', 'url(img/' + page_str + '.jpg)')
+    try {
+        const response = await fetch(`json/page_${page}.json`);
+        if (!response.ok) throw new Error('Failed to load page map');
+        const data = await response.json();
 
-  // aya segments
-  p = $.ajax({
-    url: 'json/page_' + page + '.json',
-    dataType: 'json'
-  })
+        // Clear previous active states
+        document.querySelectorAll('#suras tr').forEach(tr => tr.classList.remove('active'));
 
-  p.fail(function (data) {
-    console.log('Failed to load page map!')
-  })
+        const fragment = document.createDocumentFragment();
 
-  p.done(function (data) {
-    // Clear selected
-    $('#suras tr').removeClass('active')
-    for (var i = 0; i < data.length; i++) {
-      aya = data[i]
-      // console.log('Sura:' + aya.sura_id+' Aya:'+aya.aya_id);
-      // Activate Sura
-      $('#sura_link_' + aya.sura_id).addClass('active')
+        data.forEach(aya => {
+            // Highlight active Sura in table
+            const suraRow = document.getElementById(`sura_link_${aya.sura_id}`);
+            if (suraRow) suraRow.classList.add('active');
 
-      $a = $('<a>')
-      $a.attr('href', '#' + aya.aya_id)
-      $a.data('sura', aya.sura_id)
-      $a.data('aya', aya.aya_id)
-      $a.addClass('aya_link')
-      for (var j = 0; j < aya.segs.length; j++) {
-        seg = aya.segs[j]
-        if (seg.w != 0 && seg.w < 15) continue
-        if (seg.x < 15) {
-          seg.w += seg.x
-          seg.x = 0
-        }
-        $d = $('<div>')
-          .css('top', seg.y + 'px')
-          .css('left', seg.x + 'px')
-          .css('width', seg.w + 'px')
-          .css('height', seg.h + 'px')
-        $a.append($d)
-        // console.log('Segment:'+aya.sura_id+' Aya '+aya.aya_id);
-      }
-      $page.append($a)
+            // Create Aya Link
+            const a = document.createElement('a');
+            a.href = `#${aya.aya_id}`;
+            a.className = 'aya_link';
+            a.dataset.sura = aya.sura_id;
+            a.dataset.aya = aya.aya_id;
+
+            // Add segments
+            aya.segs.forEach(seg => {
+                if (seg.w !== 0 && seg.w < 15) return;
+                if (seg.x < 15) {
+                    seg.w += seg.x;
+                    seg.x = 0;
+                }
+
+                const div = document.createElement('div');
+                Object.assign(div.style, {
+                    top: `${seg.y}px`,
+                    left: `${seg.x}px`,
+                    width: `${seg.w}px`,
+                    height: `${seg.h}px`,
+                    position: 'absolute' // Ensure absolute positioning
+                });
+                a.appendChild(div);
+            });
+            fragment.appendChild(a);
+        });
+
+        pageEl.appendChild(fragment);
+    } catch (err) {
+        console.error(err.message);
     }
-  })
 }
 
-function aya_clicked(event) {
-  event.preventDefault()
-  event.stopPropagation()
-  el = $(event.target).closest('a')
-  sura = el.data('sura')
-  aya = el.data('aya')
-  $('a.aya_link').removeClass('active')
-  el.addClass('active')
-  // console.log('Aya Clicked!' + sura + ' ' + aya);
-  load_aya(sura, aya)
-}
+/**
+ * Load Tafseer for a specific Aya
+ */
+async function loadAya(sura, aya) {
+    const tafEl = document.getElementById('tafseer');
+    tafEl.innerHTML = 'Loading...';
 
-function load_aya(sura, aya) {
-  var tafseer_name = Array('مشكل', 'نصي', 'الجلالين', 'الميسر', 'ابن كثير')
-  $taf = $('#tafseer')
-  $taf.html('')
+    try {
+        const response = await fetch(`json/aya_${sura}_${aya}.json`);
+        const data = await response.json();
 
-  p = $.ajax({
-    url: 'json/aya_' + sura + '_' + aya + '.json',
-    dataType: 'json'
-  })
+        const html = data.map(taf => `
+            <strong>${tafseerNames[taf.type] || 'Tafseer'}</strong><br>
+            ${taf.text}
+            <hr>
+        `).join('');
 
-  p.fail(function (data) {
-    console.log('Failed to load Tafseer!')
-  })
-
-  p.done(function (data) {
-    str = ''
-    for (var i = 0; i < data.length; i++) {
-      taf = data[i]
-      str +=
-        '<strong>' +
-        tafseer_name[taf.type] +
-        '</strong><br>' +
-        taf.text +
-        '<hr>'
+        tafEl.innerHTML = html;
+    } catch (err) {
+        console.error('Failed to load Tafseer:', err);
+        tafEl.innerHTML = 'Error loading translation.';
     }
-    $taf.html(str)
-  })
 }
 
-function page_change(event) {
-  event.preventDefault()
-  event.stopPropagation()
-  el = $(event.target)
-  offset = el.data('offset')
-  console.log('Offset:' + offset)
-  page = parseInt(current_page) + offset
-  load_page(page)
-}
+// --- Event Handlers ---
 
-$(function () {
-  console.log('JQuery Started!')
-  load_suras()
-  load_page(1)
-  $(document).on('click', 'a.sura_link', sura_clicked)
-  $(document).on('click', 'a.aya_link', aya_clicked)
+document.addEventListener('click', (event) => {
+    // Sura Link Clicked
+    const suraLink = event.target.closest('.sura_link');
+    if (suraLink) {
+        event.preventDefault();
+        loadPage(parseInt(suraLink.dataset.page));
+        return;
+    }
 
-  $('.control__button').click(page_change)
+    // Aya Link Clicked
+    const ayaLink = event.target.closest('.aya_link');
+    if (ayaLink) {
+        event.preventDefault();
+        document.querySelectorAll('.aya_link').forEach(el => el.classList.remove('active'));
+        ayaLink.classList.add('active');
+        loadAya(ayaLink.dataset.sura, ayaLink.dataset.aya);
+        return;
+    }
 
-  // Hotkeys
-  //$(document).bind('keydown', 'right', function() { p = parseInt(current_page) -1; document.location='#?page='+ p; }  );
-  //$(document).bind('keydown', 'left', function() { p = parseInt(current_page) +1; document.location='#?page='+ p; }  );
-  $(document).bind('keydown', 'right', function () {
-    p = parseInt(current_page) - 1
-    load_page(p)
-  })
-  $(document).bind('keydown', 'left', function () {
-    p = parseInt(current_page) + 1
-    load_page(p)
-  })
-})
+    // Page Control Buttons
+    const controlBtn = event.target.closest('.control__button');
+    if (controlBtn) {
+        event.preventDefault();
+        const offset = parseInt(controlBtn.dataset.offset) || 0;
+        loadPage(parseInt(currentPage) + offset);
+    }
+});
+
+// Keyboard Navigation
+document.addEventListener('keydown', (event) => {
+    if (event.key === 'ArrowRight') {
+        loadPage(parseInt(currentPage) - 1);
+    } else if (event.key === 'ArrowLeft') {
+        loadPage(parseInt(currentPage) + 1);
+    }
+});
+
+// Initialization
+document.addEventListener('DOMContentLoaded', () => {
+    console.log('Vanilla JS App Started!');
+    loadSuras();
+    loadPage(1);
+});
